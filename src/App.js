@@ -8,7 +8,7 @@ export default class App extends Lightning.Component {
   }
   static _template() {
     return {
-      rect: false,
+      rect: true,
       color: 0xff000000,
       w: 1920,
       h: 1080,
