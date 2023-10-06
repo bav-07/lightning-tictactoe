@@ -1,6 +1,5 @@
 # TicTacToeJs
-
-# Update: 6/10/23
+## Update: 6/10/23
 At the moment, have the menu functionality working (indicator is disappearing when moving up, need to fix).
 To-do: implement the Game functionality.
 
