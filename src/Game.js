@@ -13,15 +13,18 @@ export default class Game extends Lightning.Component {
           x: 550,
           y: 250,
           mount: 0.5,
+          pivot: 0.5,
+          rotation: 0,
         },
         Field: {
           x: 400,
           y: 100,
+
           children: [
-            { rect: true, w: 1, h: 5, y: 300 },
-            { rect: true, w: 1, h: 5, y: 600 },
-            { rect: true, h: 1, w: 5, x: 300, y: 0 },
-            { rect: true, h: 1, w: 5, x: 600, y: 0 },
+            { rect: true, w: 1, h: 3, y: 300, color: 0xffff0000 },
+            { rect: true, w: 1, h: 3, y: 600, color: 0xffff0000 },
+            { rect: true, h: 1, w: 3, x: 300, y: 0, color: 0xffff0000 },
+            { rect: true, h: 1, w: 3, x: 600, y: 0, color: 0xffff0000 },
           ],
         },
         Markers: {
@@ -78,12 +81,16 @@ export default class Game extends Lightning.Component {
 
     // change back to rootstate
     this._setState('')
+
+    this.tag('Field').children.forEach((el, idx) => {
+      el.setSmooth(idx < 2 ? 'w' : 'h', 900, { duration: 0.7, delay: idx * 0.15 })
+    })
   }
 
   render(tiles) {
     this.tag('Markers').children = tiles.map((el, idx) => {
       return {
-        x: (idx % 3) * 300 + 100,
+        x: (idx % 3) * 300 + 120,
         y: ~~(idx / 3) * 300 + 90,
         text: { text: el === 'e' ? '' : `${el}`, fontSize: 100 },
       }
@@ -133,6 +140,8 @@ export default class Game extends Lightning.Component {
       if (this.place(this._index, 'X')) {
         this._setState('Computer')
       }
+    } else {
+      this._enterError.start()
     }
   }
 
@@ -155,6 +164,17 @@ export default class Game extends Lightning.Component {
       actions: [
         { p: 'w', v: { 0: 220, 0.25: 240, 0.5: 250, 0.75: 240, 1: 220 } },
         { p: 'h', v: { 0: 220, 0.25: 240, 0.5: 250, 0.75: 240, 1: 220 } },
+      ],
+    })
+
+    this._enterError = this.tag('PlayerPosition').animation({
+      duration: 0.5,
+      actions: [
+        { p: 'color', v: { 0: 0x40aaaaff, 0.25: 0x40ff7777, 0.75: 0x40ff7777, 1: 0x40aaaaff } },
+        {
+          p: 'rotation',
+          v: { 0: 0, 0.125: 0.1, 0.375: -0.1, 0.5: 0, 0.625: 0.1, 0.875: -0.1, 1: 0 },
+        },
       ],
     })
 
@@ -190,6 +210,9 @@ export default class Game extends Lightning.Component {
           this._reset()
         }
         $exit() {
+          this.tag('Field').children.forEach((el, idx) => {
+            el.setSmooth(idx < 2 ? 'w' : 'h', 900, { duration: 0.7, delay: idx * 0.15 })
+          })
           this.patch({
             Game: {
               smooth: { alpha: 1 },
@@ -209,6 +232,9 @@ export default class Game extends Lightning.Component {
                 } else {
                   this._aiScore += 1
                 }
+                this.tag('Field').children.forEach((el, idx) => {
+                  el.setSmooth(idx < 2 ? 'w' : 'h', 1, { duration: 0.7, delay: idx * 0.15 })
+                })
                 this.patch({
                   Game: {
                     smooth: { alpha: 0 },
@@ -216,20 +242,23 @@ export default class Game extends Lightning.Component {
                       Player: { text: { text: `Player ${this._playerScore}` } },
                       Ai: { text: { text: `Computer ${this._aiScore}` } },
                     },
-                    Notification: {
-                      text: {
-                        text: `${
-                          winner === 'X' ? 'Player' : 'Computer'
-                        } wins (press enter to continue)`,
-                      },
-                      smooth: { alpha: 1 },
+                  },
+                  Notification: {
+                    text: {
+                      text: `${
+                        winner === 'X' ? 'Player' : 'Computer'
+                      } wins (press enter to continue)`,
                     },
+                    smooth: { alpha: 1 },
                   },
                 })
               }
             },
             class Tie extends this {
               $enter() {
+                this.tag('Field').children.forEach((el, idx) => {
+                  el.setSmooth(idx < 2 ? 'w' : 'h', 1, { duration: 0.7, delay: idx * 0.15 })
+                })
                 this.patch({
                   Game: {
                     smooth: { alpha: 0 },
