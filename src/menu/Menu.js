@@ -12,7 +12,7 @@ export default class Menu extends Lightning.Component {
       },
       // Create a text component that indicates
       // which item has focus
-      FocusIndicator: { y: 5, text: { text: '>', fontFace: 'pixel' } },
+      FocusIndicator: { y: 5, text: { text: '>', fontFace: 'pixel', textColor: 0xffff0000 } },
     }
   }
 
@@ -23,6 +23,8 @@ export default class Menu extends Lightning.Component {
       repeat: -1,
       actions: [{ p: 'x', v: { 0: 0, 0.5: -40, 1: 0 } }],
     })
+
+    this._blink.start()
 
     //current focused menu index
     this._index = 0
@@ -56,7 +58,7 @@ export default class Menu extends Lightning.Component {
   }
 
   _handleUp() {
-    this._setIndex(Math.max(0, --this.index))
+    this._setIndex(Math.max(0, --this._index))
   }
 
   _handleDown() {

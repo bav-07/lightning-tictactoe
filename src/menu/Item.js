@@ -3,7 +3,7 @@ import { Lightning } from '@lightningjs/sdk'
 export default class Item extends Lightning.Component {
   static _template() {
     return {
-      text: { text: '', fontFace: 'pixel', fontSize: 50 },
+      text: { text: '', fontFace: 'pixel', fontSize: 50, textColor: '0xffff0000' },
     }
   }
 

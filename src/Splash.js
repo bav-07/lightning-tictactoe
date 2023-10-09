@@ -7,7 +7,7 @@ export default class Splash extends Lightning.Component {
         x: 960,
         y: 540,
         mount: 0.5,
-        text: { text: 'LOADING..', fontFace: 'pixel' },
+        text: { text: 'LOADING..', fontFace: 'pixel', textColor: '0xffff0000' },
       },
     }
   }

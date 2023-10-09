@@ -1,6 +1,7 @@
 import { Lightning, Utils } from '@lightningjs/sdk'
 import Splash from './Splash.js'
 import Main from './Main.js'
+import Game from './Game.js'
 
 export default class App extends Lightning.Component {
   static getFonts() {
@@ -20,12 +21,16 @@ export default class App extends Lightning.Component {
       Logo: {
         x: 100,
         y: 100,
-        text: { text: 'TicTacToe', fontFace: 'pixel' },
+        text: { text: 'TicTacToe', fontFace: 'pixel', textColor: 0xffff0000 },
       },
       Main: {
         type: Main,
         alpha: 0,
         signals: { select: 'menuSelect' },
+      },
+      Game: {
+        type: Game,
+        alpha: 0,
       },
     }
   }
@@ -57,8 +62,22 @@ export default class App extends Lightning.Component {
             return this[item.action]()
           }
         }
+        start() {
+          this._setState('Game')
+        }
         _getFocused() {
           return this.tag('Main')
+        }
+      },
+      class Game extends this {
+        $enter() {
+          this.tag('Game').setSmooth('alpha', 1)
+        }
+        $exit() {
+          this.tag('Game').setSmooth('alpha', 0)
+        }
+        _getFocused() {
+          return this.tag('Game')
         }
       },
     ]
