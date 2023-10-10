@@ -9,10 +9,12 @@ export default class Menu extends Lightning.Component {
       // so we have some space for our focus indicator
       Items: {
         x: 40,
+        y: 0,
       },
       // Create a text component that indicates
       // which item has focus
       FocusIndicator: { y: 5, text: { text: '>', fontFace: 'pixel', textColor: 0xffff0000 } },
+      // shader: { type: Lightning.shaders.Perspective, ry: (45 * Math.PI) / 180 },
     }
   }
 
@@ -47,7 +49,7 @@ export default class Menu extends Lightning.Component {
   }
 
   _setIndex(idx) {
-    this.tag('FocusIndicator').setSmooth('y', idx * 90 + 5)
+    // this.tag('FocusIndicator').setSmooth('y', idx * 90 + 5)
     this._index = idx
   }
 
@@ -58,10 +60,16 @@ export default class Menu extends Lightning.Component {
   }
 
   _handleUp() {
+    if (this._index > 0) {
+      this.tag('Items').setSmooth('y', this.tag('Items').y + 90)
+    }
     this._setIndex(Math.max(0, --this._index))
   }
 
   _handleDown() {
+    if (this._index < this.items.length - 1) {
+      this.tag('Items').setSmooth('y', this.tag('Items').y - 90)
+    }
     this._setIndex(Math.min(++this._index, this.items.length - 1))
   }
 }

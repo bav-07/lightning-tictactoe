@@ -22,15 +22,22 @@ export default class App extends Lightning.Component {
         x: 100,
         y: 100,
         text: { text: 'TicTacToe', fontFace: 'pixel', textColor: 0xffff0000 },
+        shader: { type: Lightning.shaders.Light3d, rx: Math.PI * 0.25, ambient: 0.6 },
       },
       Main: {
         type: Main,
         alpha: 0,
         signals: { select: 'menuSelect' },
+        scale: 1.3,
+        x: 200,
+        y: -100,
+        shader: { type: Lightning.shaders.Light3d, rx: Math.PI * 0.25, ambient: 0.3 },
       },
       Game: {
         type: Game,
         alpha: 0,
+        x: 200,
+        shader: { type: Lightning.shaders.Light3d, rx: Math.PI * 0.25, ambient: 0.6 },
       },
     }
   }

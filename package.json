@@ -2,7 +2,8 @@
   "name": "com.domain.app.TicTacToeJs",
   "description": "TicTacToeJs",
   "dependencies": {
-    "@lightningjs/sdk": "^5.4.1"
+    "@lightningjs/sdk": "^5.4.1",
+    "@lightningjs/ui": "^1.3.16"
   },
   "lint-staged": {
     "*.js": [
