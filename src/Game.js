@@ -2,6 +2,9 @@ import { Lightning } from '@lightningjs/sdk'
 import Utils from './lib/GameUtils.js'
 
 export default class Game extends Lightning.Component {
+
+  static _font = localStorage.getItem('font') ? localStorage.getItem('font') : 'gameOfSquids';
+
   static _template() {
     return {
       Game: {
@@ -45,7 +48,7 @@ export default class Game extends Lightning.Component {
             text: {
               text: 'Player ' + sessionStorage.getItem('playerScore'),
               fontSize: 29,
-              fontFace: 'gameOfSquids',
+              fontFace: Game._font,
             },
           },
           Ai: {
@@ -53,7 +56,7 @@ export default class Game extends Lightning.Component {
             text: {
               text: 'Computer ' + sessionStorage.getItem('aiScore'),
               fontSize: 29,
-              fontFace: 'gameOfSquids',
+              fontFace: Game._font,
             },
           },
         },
@@ -67,7 +70,7 @@ export default class Game extends Lightning.Component {
         },
         x: 100,
         y: 170,
-        text: { fontSize: 70, fontFace: 'gameOfSquids' },
+        text: { fontSize: 70, fontFace: Game._font },
         alpha: 0,
       },
     }
@@ -114,6 +117,11 @@ export default class Game extends Lightning.Component {
     this.tag('Field').children.forEach((el, idx) => {
       el.setSmooth(idx < 2 ? 'w' : 'h', 900, { duration: 0.7, delay: idx * 0.15 })
     })
+
+    //// swaps who is starting every round, but doesn't yet function as expected - breaks when the computer starts the round and the game ends in a tie
+    // if ((this._playerScore + this._aiScore) % 2 === 1) {
+    //   this._setState('Computer')
+    // }
   }
 
   render(tiles) {

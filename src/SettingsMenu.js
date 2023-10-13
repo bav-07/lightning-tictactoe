@@ -1,10 +1,7 @@
 import { Lightning } from '@lightningjs/sdk'
 import Menu from './menu/Menu'
 
-export default class Main extends Lightning.Component {
-
-  static _font = localStorage.getItem('font') ? localStorage.getItem('font') : 'gameOfSquids';
-
+export default class SettingsMenu extends Lightning.Component {
   static _template() {
     return {
       Menu: {
@@ -12,11 +9,10 @@ export default class Main extends Lightning.Component {
         y: 400,
         type: Menu,
         items: [
-          { label: 'PLAY', action: 'continue', fontFace: Main._font },
-          { label: 'ABOUT', action: 'about', fontFace: Main._font },
-          { label: 'SETTINGS', action: 'settings', fontFace: Main._font },
-          { label: 'RESET DATA', action: 'reset', fontFace: Main._font },
-          { label: 'EXIT', action: 'exit', fontFace: Main._font },
+          { label: 'FONT', action: 'font', fontFace: 'gameOfSquids' },
+          { label: 'BACKGROUND COLOUR', action: 'backcolour', fontFace: 'gameOfSquids' },
+          { label: 'PRIMARY COLOUR', action: 'primcolour', fontFace: 'gameOfSquids' },
+          { label: 'PERSPECTIVE ANGLE', action: 'perspective', fontFace: 'gameOfSquids' },
         ],
       },
     }
@@ -28,6 +24,10 @@ export default class Main extends Lightning.Component {
 
   _handleEnter() {
     this.signal('select', { item: this.tag('Menu').activeItem })
+  }
+
+  _handleBack() {
+    this.signal('back')
   }
 
   fontChanged(fontFace) {

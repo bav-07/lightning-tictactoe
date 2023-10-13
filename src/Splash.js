@@ -2,6 +2,9 @@ import { Lightning } from '@lightningjs/sdk'
 import { ProgressBar } from '@lightningjs/ui'
 
 export default class Splash extends Lightning.Component {
+
+  static _font = localStorage.getItem('font') ? localStorage.getItem('font') : 'gameOfSquids';
+
   static _template() {
     return {
       Logo: {
@@ -9,7 +12,7 @@ export default class Splash extends Lightning.Component {
         y: 540,
         alpha: 0.5,
         mount: 0.5,
-        text: { text: 'LOADING..', fontFace: 'gameOfSquids', textColor: '0xffff0000' },
+        text: { text: 'LOADING..', fontFace: Splash._font, textColor: '0xffff0000' },
       },
       ProgressBar: {
         type: ProgressBar,

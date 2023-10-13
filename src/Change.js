@@ -1,13 +1,15 @@
 import { Lightning } from '@lightningjs/sdk'
-import Menu from './menu/Menu'
 
 export default class Change extends Lightning.Component {
+
+  static _font = localStorage.getItem('font') ? localStorage.getItem('font') : 'gameOfSquids';
+
   static _template() {
     return {
       y: 400,
       text: {
         text: 'Font has been changed to gameOfSquids. Please wait for the window to reload.',
-        fontFace: 'gameOfSquids',
+        fontFace: Change._font,
         textColor: '0xffff0000',
       },
     }

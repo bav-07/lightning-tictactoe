@@ -5,16 +5,22 @@ import Game from './Game.js'
 import Change from './Change.js'
 import About from './About.js'
 import Reset from './Reset.js'
+import SettingsMenu from './SettingsMenu.js'
+import Font from './Font.js'
+import Perspective from './Perspective.js'
 
 export default class App extends Lightning.Component {
   static getFonts() {
     return [
       { family: 'gameOfSquids', url: Utils.asset('fonts/gameOfSquids.ttf'), descriptor: {} },
       { family: 'pixel', url: Utils.asset('fonts/pixel.ttf'), descriptor: {} },
+      { family: 'squarefont', url: Utils.asset('fonts/squarefont.ttf'), descriptor: {} },
+      { family: 'frostbite', url: Utils.asset('fonts/robotech.ttf'), descriptor: {} },
     ]
   }
 
   static _font = localStorage.getItem('font') ? localStorage.getItem('font') : 'gameOfSquids';
+  static _degrees = localStorage.getItem('angle') ? localStorage.getItem('angle') : 0.2;
 
   static _template() {
     return {
@@ -74,6 +80,48 @@ export default class App extends Lightning.Component {
           ambient: 0.3,
         },
       },
+      Settings: {
+        type: SettingsMenu,
+        alpha: 0,
+        x: 200,
+        signals: { select: 'menuSelect', back: true },
+        scale: 1.3,
+        x: 200,
+        y: -100,
+        shader: {
+          type: Lightning.shaders.Light3d,
+          rx: Math.PI * App._degrees,
+          ambient: 0.3,
+        }
+      },
+      Fonts: {
+        type: Font,
+        alpha: 0,
+        x: 200,
+        signals: { select: 'menuSelect', back: true },
+        scale: 1.3,
+        x: 200,
+        y: -100,
+        shader: {
+          type: Lightning.shaders.Light3d,
+          rx: Math.PI * App._degrees,
+          ambient: 0.3,
+        }
+      },
+      Perspective: {
+        type: Perspective,
+        alpha: 0,
+        x: 200,
+        signals: { select: 'menuSelect', back: true },
+        scale: 1.3,
+        x: 200,
+        y: -100,
+        shader: {
+          type: Lightning.shaders.Light3d,
+          rx: Math.PI * App._degrees,
+          ambient: 0.3,
+        }
+      },
       Reset: {
         type: Reset,
         alpha: 0,
@@ -85,7 +133,7 @@ export default class App extends Lightning.Component {
   _setup() {
     this._setState('Splash')
   }
-  static _degrees = 0.25;
+
 
   _construct() {
 
@@ -110,6 +158,8 @@ export default class App extends Lightning.Component {
 
     this.tag('Splash').fontChanged(fontFace)
     this.tag('Change').fontChanged(fontFace)
+    this.tag('Settings').fontChanged(fontFace)
+    this.tag('Fonts').fontChanged(fontFace)
     this.tag('Main').fontChanged(fontFace)
     this.tag('Game').fontChanged(fontFace)
     this.tag('About').fontChanged(fontFace)
@@ -153,8 +203,8 @@ export default class App extends Lightning.Component {
         about() {
           this._setState('About')
         }
-        change() {
-          this._setState('Change')
+        settings() {
+          this._setState('Settings')
         }
         reset() {
           this._setState('Reset')
@@ -189,6 +239,70 @@ export default class App extends Lightning.Component {
         }
         _getFocused() {
           return this.tag('About')
+        }
+      },
+      class Settings extends this {
+        $enter() {
+          this.tag('Settings').setSmooth('alpha', 1)
+        }
+        $exit() {
+          this.tag('Settings').setSmooth('alpha', 0)
+        }
+        back() {
+          this._setState('Main')
+        }
+        menuSelect({ item }) {
+          if (this._hasMethod(item.action)) {
+            return this[item.action]()
+          }
+        }
+        font() {
+          this._setState('Fonts')
+        }
+        _getFocused() {
+          return this.tag('Settings')
+        }
+      },
+      class Fonts extends this {
+        $enter() {
+          this.tag('Fonts').setSmooth('alpha', 1)
+        }
+        $exit() {
+          this.tag('Fonts').setSmooth('alpha', 0)
+        }
+        back() {
+          this._setState('Settings')
+        }
+        menuSelect({ item }) {
+          if (this._hasMethod(item.action)) {
+            return this[item.action]()
+          }
+        }
+        font() {
+          this._setState('Change')
+        }
+        gameOfSquidsFont() {
+          this.fontChanged('gameOfSquids')
+          localStorage.setItem('font', 'gameOfSquids')
+          this._setState('Settings')
+        }
+        pixelFont() {
+          this.fontChanged('pixel')
+          localStorage.setItem('font', 'pixel')
+          this._setState('Settings')
+        }
+        squareFont() {
+          this.fontChanged('squarefont')
+          localStorage.setItem('font', 'squarefont')
+          this._setState('Settings')
+        }
+        frostbiteFont() {
+          this.fontChanged('frostbite')
+          localStorage.setItem('font', 'frostbite')
+          this._setState('Settings')
+        }
+        _getFocused() {
+          return this.tag('Fonts')
         }
       },
       class Change extends this {
