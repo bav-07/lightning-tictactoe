@@ -3,7 +3,7 @@ import { Lightning } from '@lightningjs/sdk'
 export default class Item extends Lightning.Component {
   static _template() {
     return {
-      text: { text: '', fontFace: 'pixel', fontSize: 50, textColor: '0xffff0000' },
+      text: { text: '', fontFace: 'gameOfSquids', fontSize: 50, textColor: '0xffff0000' },
     }
   }
 
@@ -18,5 +18,9 @@ export default class Item extends Lightning.Component {
 
   get action() {
     return this._action
+  }
+
+  fontChanged(fontFace) {
+    this.patch({ text: { fontFace: fontFace } })
   }
 }

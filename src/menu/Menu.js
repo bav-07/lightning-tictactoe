@@ -2,6 +2,9 @@ import { Lightning } from '@lightningjs/sdk'
 import Item from './Item'
 
 export default class Menu extends Lightning.Component {
+
+  static _font = localStorage.getItem('font') ? localStorage.getItem('font') : 'gameOfSquids';
+
   static _template() {
     return {
       // we define a empty holder for our items of
@@ -13,7 +16,10 @@ export default class Menu extends Lightning.Component {
       },
       // Create a text component that indicates
       // which item has focus
-      FocusIndicator: { y: 5, text: { text: '>', fontFace: 'pixel', textColor: 0xffff0000 } },
+      FocusIndicator: {
+        y: 5,
+        text: { text: '>', fontFace: Menu._font, textColor: 0xffff0000 },
+      },
       // shader: { type: Lightning.shaders.Perspective, ry: (45 * Math.PI) / 180 },
     }
   }
@@ -71,5 +77,12 @@ export default class Menu extends Lightning.Component {
       this.tag('Items').setSmooth('y', this.tag('Items').y - 90)
     }
     this._setIndex(Math.min(++this._index, this.items.length - 1))
+  }
+
+  fontChanged(fontFace) {
+    this.tag('FocusIndicator').patch({text: {fontFace}})
+    this.tag('Items').children.forEach(element => {
+      element.fontChanged(fontFace)
+    });
   }
 }

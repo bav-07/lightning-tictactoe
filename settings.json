@@ -11,7 +11,7 @@
     "inspector": true,
     "path": "./static",
     "log": false,
-    "showVersion": true,
+    "showVersion": false,
     "imageServerUrl": "//cdn.metrological.com/image",
     "proxyUrl": "//cdn.metrological.com/proxy",
     "textureMode": true

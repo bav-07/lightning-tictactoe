@@ -7,8 +7,9 @@ export default class Splash extends Lightning.Component {
       Logo: {
         x: 960,
         y: 540,
+        alpha: 0.5,
         mount: 0.5,
-        text: { text: 'LOADING..', fontFace: 'pixel', textColor: '0xffff0000' },
+        text: { text: 'LOADING..', fontFace: 'gameOfSquids', textColor: '0xffff0000' },
       },
       ProgressBar: {
         type: ProgressBar,
@@ -25,21 +26,28 @@ export default class Splash extends Lightning.Component {
       },
     }
   }
+
+  fontChanged(fontFace) {
+    this.tag('Logo').patch({ text: { fontFace } })
+  }
+
   _init() {
     // create animation and store a reference, so we can start/stop/pause in the future
     this._pulse = this.tag('Logo').animation({
-      duration: 4,
-      repeat: 0,
+      duration: 0.25,
+      repeat: 1,
       actions: [
-        { p: 'alpha', v: { 0: 0, 0.5: 0.5, 1: 0 } },
-        { p: 'scale', v: { 0: 1, 0.5: 1.2, 1: 1 } },
+        {
+          p: 'text.text',
+          v: { 0: 'LOADING.', 0.33: 'LOADING..', 0.66: 'LOADING...', 1: 'LOADING.' },
+        },
       ],
       w: 500,
       h: 500,
     })
 
     this._progress = this.tag('ProgressBar').animation({
-      duration: 4,
+      duration: 0.5,
       actions: [
         { p: 'value', v: { 0: 0, 0.25: Math.random() / 2, 0.75: 0.5 + Math.random() / 2, 1: 1 } },
       ],

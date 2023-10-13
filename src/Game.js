@@ -5,6 +5,12 @@ export default class Game extends Lightning.Component {
   static _template() {
     return {
       Game: {
+        shader: {
+          type: Lightning.shaders.Light3d,
+          rx: Math.PI * 0.2,
+          ambient: 0.6,
+          pivotX: 600,
+        },
         PlayerPosition: {
           rect: true,
           w: 250,
@@ -21,43 +27,66 @@ export default class Game extends Lightning.Component {
           y: 100,
 
           children: [
-            { rect: true, w: 1, h: 3, y: 300, color: 0xffff0000 },
-            { rect: true, w: 1, h: 3, y: 600, color: 0xffff0000 },
-            { rect: true, h: 1, w: 3, x: 300, y: 0, color: 0xffff0000 },
-            { rect: true, h: 1, w: 3, x: 600, y: 0, color: 0xffff0000 },
+            { rect: true, w: 1, h: 5, y: 300, color: 0xffff0000 },
+            { rect: true, w: 1, h: 5, y: 600, color: 0xffff0000 },
+            { rect: true, h: 1, w: 5, x: 300, y: 0, color: 0xffff0000 },
+            { rect: true, h: 1, w: 5, x: 600, y: 0, color: 0xffff0000 },
           ],
         },
         Markers: {
           x: 400,
           y: 100,
+          text: { text: '', color: 0xffff0000 },
         },
         ScoreBoard: {
-          x: 100,
+          x: 130,
           y: 170,
           Player: {
-            text: { text: 'Player 0', fontSize: 29, fontFace: 'Pixel' },
+            text: {
+              text: 'Player ' + sessionStorage.getItem('playerScore'),
+              fontSize: 29,
+              fontFace: 'gameOfSquids',
+            },
           },
-          Ai: { y: 40, text: { text: 'Computer 0', fontSize: 29, fontFace: 'Pixel' } },
+          Ai: {
+            x: 1220,
+            text: {
+              text: 'Computer ' + sessionStorage.getItem('aiScore'),
+              fontSize: 29,
+              fontFace: 'gameOfSquids',
+            },
+          },
         },
       },
       Notification: {
+        shader: {
+          type: Lightning.shaders.Light3d,
+          rx: Math.PI * 0.25,
+          ambient: 0.6,
+          pivotX: 600,
+        },
         x: 100,
         y: 170,
-        text: { fontSize: 70, fontFace: 'Pixel' },
+        text: { fontSize: 70, fontFace: 'gameOfSquids' },
         alpha: 0,
       },
     }
   }
 
   _construct() {
+    if (!sessionStorage.getItem('aiScore') || !sessionStorage.getItem('playerScore')) {
+      sessionStorage.setItem('aiScore', 0)
+      sessionStorage.setItem('playerScore', 0)
+    }
+
     // current player tile index
     this._index = 0
 
     // computer score
-    this._aiScore = 0
+    this._aiScore = Number(sessionStorage.getItem('aiScore'))
 
     // player score
-    this._playerScore = 0
+    this._playerScore = Number(sessionStorage.getItem('playerScore'))
   }
 
   _active() {
@@ -90,9 +119,14 @@ export default class Game extends Lightning.Component {
   render(tiles) {
     this.tag('Markers').children = tiles.map((el, idx) => {
       return {
-        x: (idx % 3) * 300 + 120,
-        y: ~~(idx / 3) * 300 + 90,
-        text: { text: el === 'e' ? '' : `${el}`, fontSize: 100 },
+        x: (idx % 3) * 300 + 85,
+        y: ~~(idx / 3) * 300 + 40,
+        text: {
+          text: el === 'e' ? '' : `${el}`,
+          fontSize: 180,
+          fontFace: 'gameOfSquids',
+          textColor: el === 'X' ? 0xffff0000 : 0xff00ffff,
+        },
       }
     })
   }
@@ -145,6 +179,10 @@ export default class Game extends Lightning.Component {
     }
   }
 
+  _handleBack() {
+    this.signal('back')
+  }
+
   place(index, marker) {
     this._tiles[index] = marker
     this.render(this._tiles)
@@ -154,6 +192,13 @@ export default class Game extends Lightning.Component {
       return false
     }
     return true
+  }
+
+  fontChanged(fontFace) {
+    this.tag('ScoreBoard').tag('Player').patch({ text: { fontFace } })
+    this.tag('ScoreBoard').tag('Ai').patch({ text: { fontFace } })
+
+    this.tag('Notification').patch({ text: { fontFace } })
   }
 
   _init() {
@@ -190,6 +235,7 @@ export default class Game extends Lightning.Component {
             this._setState('End.Tie')
             return false
           }
+          this.tag('Game').setSmooth('shader.rx', Math.PI * -0.2)
           setTimeout(() => {
             if (this.place(position, '0')) {
               this._setState('')
@@ -203,6 +249,7 @@ export default class Game extends Lightning.Component {
 
         $exit() {
           this.tag('PlayerPosition').setSmooth('alpha', 1)
+          this.tag('Game').setSmooth('shader.rx', Math.PI * 0.2)
         }
       },
       class End extends this {
@@ -235,6 +282,10 @@ export default class Game extends Lightning.Component {
                 this.tag('Field').children.forEach((el, idx) => {
                   el.setSmooth(idx < 2 ? 'w' : 'h', 1, { duration: 0.7, delay: idx * 0.15 })
                 })
+
+                sessionStorage.setItem('aiScore', Number(this._aiScore))
+                sessionStorage.setItem('playerScore', Number(this._playerScore))
+
                 this.patch({
                   Game: {
                     smooth: { alpha: 0 },

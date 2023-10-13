@@ -9,10 +9,11 @@ export default class Main extends Lightning.Component {
         y: 400,
         type: Menu,
         items: [
-          { label: 'START NEW GAME', action: 'start' },
-          { label: 'CONTINUE', action: 'continue' },
-          { label: 'ABOUT', action: 'about' },
-          { label: 'EXIT', action: 'exit' },
+          { label: 'PLAY', action: 'continue', fontFace: 'gameOfSquids' },
+          { label: 'ABOUT', action: 'about', fontFace: 'gameOfSquids' },
+          { label: 'SETTINGS', action: 'change', fontFace: 'gameOfSquids' },
+          { label: 'RESET DATA', action: 'reset', fontFace: 'gameOfSquids' },
+          { label: 'EXIT', action: 'exit', fontFace: 'gameOfSquids' },
         ],
       },
     }
@@ -24,5 +25,12 @@ export default class Main extends Lightning.Component {
 
   _handleEnter() {
     this.signal('select', { item: this.tag('Menu').activeItem })
+  }
+
+  fontChanged(fontFace) {
+    this.tag('Menu').fontChanged(fontFace)
+    // this.items.forEach((element) => {
+    //   element.patch({ fontFace: fontFace })
+    // })
   }
 }
