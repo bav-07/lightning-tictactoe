@@ -85,9 +85,9 @@ export default class App extends Lightning.Component {
         alpha: 0,
         x: 200,
         signals: { select: 'menuSelect', back: true },
-        scale: 1.3,
+        scale: 0,
         x: 200,
-        y: -100,
+        y: 500,
         shader: {
           type: Lightning.shaders.Light3d,
           rx: Math.PI * App._degrees,
@@ -99,9 +99,9 @@ export default class App extends Lightning.Component {
         alpha: 0,
         x: 200,
         signals: { select: 'menuSelect', back: true },
-        scale: 1.3,
+        scale: 0,
         x: 200,
-        y: -100,
+        y: 500,
         shader: {
           type: Lightning.shaders.Light3d,
           rx: Math.PI * App._degrees,
@@ -183,9 +183,12 @@ export default class App extends Lightning.Component {
       class Main extends this {
         $enter() {
           this.tag('Main').patch({ smooth: { alpha: 1, y: 0 } })
+          this.tag('Main').setSmooth('scale', 1.3)
+
         }
         $exit() {
-          this.tag('Main').patch({ smooth: { alpha: 0, y: 100 } })
+          this.tag('Main').patch({ smooth: { y: -600 } })
+          this.tag('Main').patch({smooth: {alpha: 0, scale: 3}})
         }
         menuSelect({ item }) {
           if (this._hasMethod(item.action)) {
@@ -243,16 +246,22 @@ export default class App extends Lightning.Component {
       },
       class Settings extends this {
         $enter() {
-          this.tag('Settings').setSmooth('alpha', 1)
+          this.tag('Settings').patch({ smooth: { alpha: 1, y: 0 } })
+          this.tag('Settings').setSmooth('scale', 1.3)
         }
         $exit() {
-          this.tag('Settings').setSmooth('alpha', 0)
+          // this.tag('Settings').setSmooth('alpha', 0)
+
         }
         back() {
+          this.tag('Settings').patch({ smooth: { y: 500 } })
+          this.tag('Settings').patch({smooth: {alpha: 0, scale: 0}})
           this._setState('Main')
         }
         menuSelect({ item }) {
           if (this._hasMethod(item.action)) {
+            this.tag('Settings').patch({ smooth: { y: -600 } })
+            this.tag('Settings').patch({smooth: {alpha: 0, scale: 3}})
             return this[item.action]()
           }
         }
@@ -265,10 +274,57 @@ export default class App extends Lightning.Component {
       },
       class Fonts extends this {
         $enter() {
-          this.tag('Fonts').setSmooth('alpha', 1)
+          this.tag('Fonts').patch({ smooth: { alpha: 1, y: 0 } })
+          this.tag('Fonts').setSmooth('scale', 1.3)
         }
         $exit() {
           this.tag('Fonts').setSmooth('alpha', 0)
+        }
+        back() {
+          this.tag('Fonts').patch({ smooth: { y: 500 } })
+          this.tag('Fonts').patch({smooth: {alpha: 0, scale: 0}})
+          this._setState('Settings')
+        }
+        menuSelect({ item }) {
+          if (this._hasMethod(item.action)) {
+            this.tag('Fonts').patch({ smooth: { y: 500 } })
+            this.tag('Fonts').patch({smooth: {alpha: 0, scale: 0}})
+            return this[item.action]()
+          }
+        }
+        font() {
+          this._setState('Change')
+        }
+        gameOfSquidsFont() {
+          this.fontChanged('gameOfSquids')
+          localStorage.setItem('font', 'gameOfSquids')
+          this._setState('Settings')
+        }
+        pixelFont() {
+          this.fontChanged('pixel')
+          localStorage.setItem('font', 'pixel')
+          this._setState('Settings')
+        }
+        squareFont() {
+          this.fontChanged('squarefont')
+          localStorage.setItem('font', 'squarefont')
+          this._setState('Settings')
+        }
+        frostbiteFont() {
+          this.fontChanged('frostbite')
+          localStorage.setItem('font', 'frostbite')
+          this._setState('Settings')
+        }
+        _getFocused() {
+          return this.tag('Fonts')
+        }
+      },
+      class PrimaryColours extends this {
+        $enter() {
+          this.tag('PrimaryColours').setSmooth('alpha', 1)
+        }
+        $exit() {
+          this.tag('PrimaryColours').setSmooth('alpha', 0)
         }
         back() {
           this._setState('Settings')
@@ -278,7 +334,7 @@ export default class App extends Lightning.Component {
             return this[item.action]()
           }
         }
-        font() {
+        colour() {
           this._setState('Change')
         }
         gameOfSquidsFont() {

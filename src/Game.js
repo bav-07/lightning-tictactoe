@@ -140,6 +140,8 @@ export default class Game extends Lightning.Component {
   }
 
   _handleUp() {
+    let sound = new Audio('./static/audio/BW2MenuSelect.wav')
+    sound.play()
     let idx = this._index
     if (idx - 3 >= 0) {
       this._setIndex(idx - 3)
@@ -147,6 +149,8 @@ export default class Game extends Lightning.Component {
   }
 
   _handleDown() {
+    let sound = new Audio('./static/audio/BW2MenuSelect.wav')
+    sound.play()
     let idx = this._index
     if (idx + 3 <= this._tiles.length - 1) {
       this._setIndex(idx + 3)
@@ -154,6 +158,8 @@ export default class Game extends Lightning.Component {
   }
 
   _handleLeft() {
+    let sound = new Audio('./static/audio/BW2MenuSelect.wav')
+    sound.play()
     let idx = this._index
     if (idx % 3) {
       this._setIndex(idx - 1)
@@ -161,6 +167,8 @@ export default class Game extends Lightning.Component {
   }
 
   _handleRight() {
+    let sound = new Audio('./static/audio/BW2MenuSelect.wav')
+    sound.play()
     const newIndex = this._index + 1
     if (newIndex % 3) {
       this._setIndex(newIndex)
@@ -179,15 +187,21 @@ export default class Game extends Lightning.Component {
 
   _handleEnter() {
     if (this._tiles[this._index] === 'e') {
+      let sound = new Audio('./static/audio/SFX_PRESS_AB.wav')
+      sound.play()
       if (this.place(this._index, 'X')) {
         this._setState('Computer')
       }
     } else {
+      let sound = new Audio('./static/audio/SFX_COLLISION.wav')
+      sound.play()
       this._enterError.start()
     }
   }
 
   _handleBack() {
+    let sound = new Audio('./static/audio/BW2CloseMenu.wav')
+    sound.play()
     this.signal('back')
   }
 

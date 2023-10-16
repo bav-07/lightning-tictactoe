@@ -23,10 +23,14 @@ export default class Font extends Lightning.Component {
   }
 
   _handleEnter() {
+    let sound = new Audio('./static/audio/BW2MenuChoose.wav')
+    sound.play()
     this.signal('select', { item: this.tag('Menu').activeItem })
   }
 
   _handleBack() {
+    let sound = new Audio('./static/audio/BW2CloseMenu.wav')
+    sound.play()
     this.signal('back')
   }
 

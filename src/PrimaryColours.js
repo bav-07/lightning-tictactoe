@@ -9,10 +9,10 @@ export default class Font extends Lightning.Component {
         y: 400,
         type: Menu,
         items: [
-          { label: 'RED', action: 'gameOfSquidsFont', fontFace: 'gameOfSquids' },
-          { label: 'BLUE', action: 'pixelFont', fontFace: 'gameOfSquids' },
-          { label: 'YELLOW', action: 'squareFont', fontFace: 'gameOfSquids' },
-          { label: 'GREEN', action: 'frostbiteFont', fontFace: 'gameOfSquids' },
+          { label: 'RED', action: 'redColour', fontFace: 'gameOfSquids' },
+          { label: 'BLUE', action: 'blueColour', fontFace: 'gameOfSquids' },
+          { label: 'YELLOW', action: 'yellowColour', fontFace: 'gameOfSquids' },
+          { label: 'GREEN', action: 'greenColour', fontFace: 'gameOfSquids' },
         ],
       },
     }

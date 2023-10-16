@@ -66,17 +66,23 @@ export default class Menu extends Lightning.Component {
   }
 
   _handleUp() {
+    let sound = new Audio('./static/audio/BW2MenuSelect.wav')
+    sound.play()
     if (this._index > 0) {
       this.tag('Items').setSmooth('y', this.tag('Items').y + 90)
     }
     this._setIndex(Math.max(0, --this._index))
+
   }
 
   _handleDown() {
+    let sound = new Audio('./static/audio/BW2MenuSelect.wav')
+    sound.play()
     if (this._index < this.items.length - 1) {
       this.tag('Items').setSmooth('y', this.tag('Items').y - 90)
     }
     this._setIndex(Math.min(++this._index, this.items.length - 1))
+
   }
 
   fontChanged(fontFace) {

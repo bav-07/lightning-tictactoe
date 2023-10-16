@@ -28,6 +28,8 @@ export default class Main extends Lightning.Component {
 
   _handleEnter() {
     this.signal('select', { item: this.tag('Menu').activeItem })
+    let sound = new Audio('./static/audio/BW2MenuChoose.wav')
+    sound.play()
   }
 
   fontChanged(fontFace) {
