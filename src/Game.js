@@ -11,8 +11,13 @@ export default class Game extends Lightning.Component {
         shader: {
           type: Lightning.shaders.Light3d,
           rx: Math.PI * 0.2,
+          ry: Math.PI * 0.1,
           ambient: 0.6,
           pivotX: 600,
+        },
+        shader2: {
+          type: Lightning.shaders.FadeOut,
+          fade: 0,
         },
         PlayerPosition: {
           rect: true,
@@ -52,7 +57,8 @@ export default class Game extends Lightning.Component {
             },
           },
           Ai: {
-            x: 1220,
+            x: -5,
+            y: 50,
             text: {
               text: 'Computer ' + sessionStorage.getItem('aiScore'),
               fontSize: 29,
@@ -145,6 +151,7 @@ export default class Game extends Lightning.Component {
     let idx = this._index
     if (idx - 3 >= 0) {
       this._setIndex(idx - 3)
+      this.tag('Game').setSmooth('shader.ry', this.tag('Game').shader.ry + Math.PI * 0.1 )
     }
   }
 
@@ -154,6 +161,7 @@ export default class Game extends Lightning.Component {
     let idx = this._index
     if (idx + 3 <= this._tiles.length - 1) {
       this._setIndex(idx + 3)
+      this.tag('Game').setSmooth('shader.ry', this.tag('Game').shader.ry - Math.PI * 0.1 )
     }
   }
 
@@ -163,6 +171,7 @@ export default class Game extends Lightning.Component {
     let idx = this._index
     if (idx % 3) {
       this._setIndex(idx - 1)
+      this.tag('Game').setSmooth('shader.rx', this.tag('Game').shader.rx + Math.PI * 0.2 )
     }
   }
 
@@ -172,6 +181,8 @@ export default class Game extends Lightning.Component {
     const newIndex = this._index + 1
     if (newIndex % 3) {
       this._setIndex(newIndex)
+      this.tag('Game').setSmooth('shader.rx', this.tag('Game').shader.rx - Math.PI * 0.2 )
+      console.log(this.tag('Game').shader.rx)
     }
   }
 
@@ -183,6 +194,14 @@ export default class Game extends Lightning.Component {
       },
     })
     this._index = idx
+    if (this._index === 4) {
+      this.tag('Game').setSmooth('shader2.fade',  20)
+      console.log('Hi')
+    }
+    else {
+      this.tag('Game').setSmooth('shader2.fade',  0)
+
+    }
   }
 
   _handleEnter() {
@@ -257,7 +276,7 @@ export default class Game extends Lightning.Component {
             this._setState('End.Tie')
             return false
           }
-          this.tag('Game').setSmooth('shader.rx', Math.PI * -0.2)
+          // this.tag('Game').setSmooth('shader.rx', Math.PI * -0.2)
           setTimeout(() => {
             if (this.place(position, '0')) {
               this._setState('')
@@ -271,7 +290,7 @@ export default class Game extends Lightning.Component {
 
         $exit() {
           this.tag('PlayerPosition').setSmooth('alpha', 1)
-          this.tag('Game').setSmooth('shader.rx', Math.PI * 0.2)
+          // this.tag('Game').setSmooth('shader.rx', Math.PI * 0.2)
         }
       },
       class End extends this {

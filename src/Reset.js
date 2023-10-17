@@ -23,6 +23,8 @@ export default class Reset extends Lightning.Component {
   }
 
   _handleBack() {
+    let sound = new Audio('./static/audio/BW2CloseMenu.wav')
+    sound.play()
     this.signal('back')
   }
 
