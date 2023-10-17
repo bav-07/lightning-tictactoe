@@ -1,4 +1,7 @@
 # TicTacToeJs
+
+## Access at: https://bav-07.github.io/lightning-tictactoe/build/index.html
+
 ## Update: 6/10/23
 At the moment, all game functionality is functional as expected. 3D Perspective effects have been implemented
 To-do: implement additional pages from menu.
