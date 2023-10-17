@@ -7,12 +7,15 @@ To-do: implement additional pages from menu.
 
 ### Getting started
 
+> Make sure you have node.js downloaded on your device; download link - [Node.js](https://nodejs.org/en/download)
+
 > Before you follow the steps below, make sure you have the
 [Lightning-CLI](https://rdkcentral.github.io/Lightning-CLI/#/) installed _globally_ only your system
 
 ```
 npm install -g @lightningjs/cli
 ```
+> Check the install was successful by running `lng -V` to see the version of Lightning that was installed
 
 #### Running the App
 
